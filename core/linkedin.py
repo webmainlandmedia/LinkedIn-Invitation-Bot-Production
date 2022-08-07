@@ -5,7 +5,7 @@ import os
 import time
 
 CSVFILENAME = 'apollo-contacts-export.csv'
-CUSTOMIZE_TEXT = converter('text.txt')
+TEXTFILENAME = 'text.txt'
 
 
 class LinkedIn():
@@ -14,6 +14,7 @@ class LinkedIn():
         print("Firefox is the defualt web browser for this program.")
         print("Please install Firefox inside of your computer before running the program by visiting https://www.mozilla.org/en-CA/firefox/new/")
         URL = "https://www.linkedin.com/sales/"
+
         self.USERNAME = input("Please enter your LinkedIn username: ")
         self.PASSWORD = input("Please enter your LinkedIn password: ")
         self.mode = input(
@@ -23,25 +24,25 @@ class LinkedIn():
         profile.set_preference('intl.accept_languages', 'en-US, en')
         # Language preference as English
         self.driver = webdriver.Firefox(firefox_profile=profile,
-                                        executable_path=r'.\core\geckodriver.exe')
+                                        executable_path='/usr/local/bin/geckodriver')
         self.driver.get(URL)
         # Initailize the web browser and get into the LinkedIn page
         time.sleep(1)
 
     def login(self):
         # LOGIN SESSION
-        username = self.driver.find_element_by_xpath(
+        username = self.driver.find_element("xpath",
             "//input[@name='session_key']")
-        password = self.driver.find_element_by_xpath(
+        password = self.driver.find_element("xpath",
             "//input[@name='session_password']")
         username.send_keys(self.USERNAME)
         password.send_keys(self.PASSWORD)
         time.sleep(2)
-        submit = self.driver.find_element_by_xpath(
+        submit = self.driver.find_element("xpath",
             "//button[@type='submit']").click()
         # Skipping phone number verification step
         try:
-            skip = self.driver.find_element_by_xpath(
+            skip = self.driver.find_element("xpath",
                 "//button[@type='button']").click()
         except:
             print("No Skip Msg!!")
@@ -49,6 +50,7 @@ class LinkedIn():
     def msgSending(self):
         self.login()
         data = filter(CSVFILENAME)
+        CUSTOMIZE_TEXT = converter(TEXTFILENAME)
         for info in data:
             firstName = info[0]
             link = info[1]
@@ -56,12 +58,12 @@ class LinkedIn():
             self.driver.get(link)
             time.sleep(2)
             try:
-                dot_icon = self.driver.find_element_by_xpath(
+                dot_icon = self.driver.find_element("xpath",
                     "//button[starts-with(@id, 'hue-menu-trigger-ember')]").click()
             except:
                 print("Could not located the dot icon")
             try:
-                connect = self.driver.find_element_by_xpath(
+                connect = self.driver.find_element("xpath",
                     "//button[starts-with(@class, 'ember-view')]").click()
             except:
                 print("Could not find Connect button")
@@ -74,7 +76,7 @@ class LinkedIn():
             time.sleep(1)
             if self.mode == "RUN":
                 try:
-                    sendMsg = self.driver.find_element_by_xpath(
+                    sendMsg = self.driver.find_element("xpath",
                         "//button[starts-with(@class, 'button-primary-medium')]").click()
                 except:
                     print("Could not find message sending button")
@@ -88,16 +90,3 @@ class LinkedIn():
 
 def deleteCSVFile(csv_file):
     os.remove(csv_file)
-
-
-if not os.path.exists(CSVFILENAME):
-    print(
-        f"Please put '{CSVFILENAME}' in current folder before running the program!!!")
-else:
-    newtest = LinkedIn()
-    time.sleep(5)
-    newtest.msgSending()
-    time.sleep(2)
-    newtest.closeWindow()
-    deleteCSVFile(CSVFILENAME)
-    print(f"{CSVFILENAME} has been deleted")
