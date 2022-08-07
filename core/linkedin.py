@@ -6,6 +6,8 @@ import time
 
 CSVFILENAME = 'apollo-contacts-export.csv'
 TEXTFILENAME = 'text.txt'
+MAC = '/usr/local/bin/geckodriver'
+WINDOWS = r'./core/geckodriver.exe'
 
 
 class LinkedIn():
@@ -24,7 +26,7 @@ class LinkedIn():
         profile.set_preference('intl.accept_languages', 'en-US, en')
         # Language preference as English
         self.driver = webdriver.Firefox(firefox_profile=profile,
-                                        executable_path='/usr/local/bin/geckodriver')
+                                        executable_path=MAC)
         self.driver.get(URL)
         # Initailize the web browser and get into the LinkedIn page
         time.sleep(1)
