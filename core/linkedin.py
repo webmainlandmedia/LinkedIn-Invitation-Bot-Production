@@ -70,7 +70,7 @@ class LinkedIn():
             # except:
             #     print("Skip print")
             try:
-                connect = self.driver.find_elements("xpath","//button[starts-with(@class, 'ember-view _item_1xnv7i')]")[1].click()
+                connect = self.driver.find_elements("xpath","//button[starts-with(@class, 'ember-view _item_1xnv7i')]")[0].click()
             except:
                 print("Could not find Connect button")
             time.sleep(1)
