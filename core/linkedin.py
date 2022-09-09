@@ -1,4 +1,5 @@
 from selenium import webdriver
+from selenium.webdriver.common.by import By
 from core.text_converter import converter
 from core.excel_read import filter
 import os
@@ -64,15 +65,22 @@ class LinkedIn():
                     "//button[starts-with(@id, 'hue-menu-trigger-ember')]").click()
             except:
                 print("Could not located the dot icon")
+            # try:
+            #     print(self.driver.find_elements("xpath","//button[starts-with(@class, 'ember-view _item_1xnv7i')]"))
+            # except:
+            #     print("Skip print")
             try:
-                connect = self.driver.find_element("xpath",
-                    "//button[starts-with(@class, 'ember-view')]").click()
+                connect = self.driver.find_elements("xpath","//button[starts-with(@class, 'ember-view _item_1xnv7i')]")[1].click()
             except:
                 print("Could not find Connect button")
             time.sleep(1)
+            # try:
+            #     print(text)
+            #     print(self.driver.find_element(By.ID,"connect-cta-form__invitation"))
+            # except:
+            #     print("Could not find text area")
             try:
-                text_area = self.driver.find_element_by_id(
-                    "connect-cta-form__invitation").send_keys(text)
+                text_area = self.driver.find_element(By.ID,"connect-cta-form__invitation").send_keys(text)
             except:
                 print("This user's invitation has been sent out")
             time.sleep(1)
