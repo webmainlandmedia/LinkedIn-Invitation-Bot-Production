@@ -60,30 +60,26 @@ class LinkedIn():
             text = f"Hi {firstName}, {CUSTOMIZE_TEXT}."
             self.driver.get(link)
             time.sleep(2)
-            try:
-                dot_icon = self.driver.find_element("xpath",
+            
+            for button_pos in [-1,0]:
+                try:
+                    dot_icon = self.driver.find_element("xpath",
                     "//button[starts-with(@id, 'hue-menu-trigger-ember')]").click()
-            except:
-                print("Could not located the dot icon")
-            # try:
-            #     print(self.driver.find_elements("xpath","//button[starts-with(@class, 'ember-view _item_1xnv7i')]"))
-            # except:
-            #     print("Skip print")
-            try:
-                connect = self.driver.find_elements("xpath","//button[starts-with(@class, 'ember-view _item_1xnv7i')]")[0].click()
-            except:
-                print("Could not find Connect button")
-            time.sleep(1)
-            # try:
-            #     print(text)
-            #     print(self.driver.find_element(By.ID,"connect-cta-form__invitation"))
-            # except:
-            #     print("Could not find text area")
-            try:
-                text_area = self.driver.find_element(By.ID,"connect-cta-form__invitation").send_keys(text)
-            except:
-                print("This user's invitation has been sent out")
-            time.sleep(1)
+                except:
+                    print("Could not located the dot icon")
+                try:
+                    print(f"Try connect button at {button_pos}")
+                    connect = self.driver.find_elements("xpath","//button[starts-with(@class, 'ember-view _item_1xnv7i')]")[button_pos].click()
+                    try:
+                        text_area = self.driver.find_element(By.ID,"connect-cta-form__invitation").send_keys(text)
+                    except:
+                        print("This user's invitation has been sent out")
+                    time.sleep(1)
+                except:
+                    print("Could not find Connect button")
+                time.sleep(1)
+            
+            
             if self.mode == "RUN":
                 try:
                     sendMsg = self.driver.find_element("xpath",
