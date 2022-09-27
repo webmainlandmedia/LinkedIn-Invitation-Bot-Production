@@ -27,7 +27,7 @@ class LinkedIn():
         profile.set_preference('intl.accept_languages', 'en-US, en')
         # Language preference as English
         self.driver = webdriver.Firefox(firefox_profile=profile,
-                                        executable_path=MAC)
+                                        executable_path=WINDOWS)
         self.driver.get(URL)
         # Initailize the web browser and get into the LinkedIn page
         time.sleep(1)
@@ -78,15 +78,16 @@ class LinkedIn():
                 except:
                     print("Could not find Connect button")
                 time.sleep(1)
+                if self.mode == "RUN":
+                    try:
+                        sendMsg = self.driver.find_element("xpath",
+                            "//button[starts-with(@class, 'button-primary-medium')]").click()
+                    except:
+                        print("Could not find message sending button")
+                    time.sleep(1)
             
             
-            if self.mode == "RUN":
-                try:
-                    sendMsg = self.driver.find_element("xpath",
-                        "//button[starts-with(@class, 'button-primary-medium')]").click()
-                except:
-                    print("Could not find message sending button")
-            time.sleep(1)
+            
 
     def closeWindow(self):
         # Close window after the automation
